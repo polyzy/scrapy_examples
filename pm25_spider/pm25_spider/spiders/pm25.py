@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from scrapy.contrib.spiders import CrawlSpider
+from scrapy.spider import Spider
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.selector import HtmlXPathSelector
 from pm25_spider.items import Pm25SpiderItem
@@ -10,7 +10,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 
-class Pm25Spider(CrawlSpider):
+class Pm25Spider(Spider):
     name = 'pm25'
     start_urls = ['http://pm25.in']
 

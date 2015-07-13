@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from scrapy.selector import HtmlXPathSelector
-from scrapy.contrib.spiders import CrawlSpider
+from scrapy.spider import Spider
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from csdn_spider.items import CsdnSpiderItem
 from scrapy.http import Request
 
 
-class CsdnSpider(CrawlSpider):
+class CsdnSpider(Spider):
     name = 'csdn'
     allow_domains = ["blog.csdn.net"]
     start_urls = ["http://blog.csdn.net/column.html"]
@@ -21,8 +21,11 @@ class CsdnSpider(CrawlSpider):
         items = []
         item = CsdnSpiderItem()
         for sel in response.xpath("//div[@class='blog_list']//h1"):
-            item['link'] = sel.xpath('a[2]/@href').extract()[0].strip()
-            item['title'] = sel.xpath('a[2]/text()').extract()[0].strip()
-            print item['title']
+            try:
+                item['link'] = sel.xpath('a[2]/@href').extract()[0].strip()
+                item['title'] = sel.xpath('a[2]/text()').extract()[0].strip()
+                print item['title']
+            except IndexError:
+                pass
             items.append(item)
         return items
